@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
+import { useNavigate } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
 import { supabaseService } from '../services/supabaseClient';
 
@@ -7,6 +8,7 @@ export default function CaseMap() {
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   console.log('🗺️ CaseMap component loaded');
 
@@ -126,10 +128,9 @@ export default function CaseMap() {
                 <Popup>
                   <strong>{c.city}, {c.country}</strong><br />
                   <a
-                    href={`/case-viewer-details?id=${c.id}`}
+                    onClick={() => navigate(`/case-viewer-details?id=${c.id}`)}
                     className="case-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    style={{ cursor: 'pointer' }}
                   >
                     {c.title}
                   </a>
