@@ -45,17 +45,22 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('🔍 Starting login process...');
     if (!validateForm()) return;
     setIsLoading(true);
     setErrors({});
     try {
+      console.log('📧 Attempting login with:', formData.email);
       // Use Supabase authentication
       const { data, error } = await supabaseService.signIn(
         formData.email,
         formData.password
       );
 
+      console.log('📡 Supabase response:', { data, error });
+
       if (error) {
+        console.error('❌ Login error:', error);
         // Handle specific Supabase errors
         if (error.message.includes('Email not confirmed')) {
           setErrors({ submit: 'Please check your email and click the confirmation link, or contact support to verify your account.' });
@@ -68,14 +73,17 @@ const LoginForm = () => {
         console.log('✅ Login successful!', data);
         // Store user info in localStorage for easy access
         localStorage.setItem('userInfo', JSON.stringify(data.user));
+        console.log('💾 User info stored in localStorage');
         console.log('🚀 Navigating to dashboard...');
         navigate('/dashboard-overview');
+        console.log('✅ Navigation called');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('💥 Unexpected error:', error);
       setErrors({ submit: 'Network error. Please try again.' });
     } finally {
       setIsLoading(false);
+      console.log('🏁 Login process completed');
     }
   };
 
