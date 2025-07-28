@@ -66,6 +66,11 @@ export default function PublicProfilePage() {
             website: '',
             email: decodedUserId
           },
+          social_links: {
+            linkedin: '',
+            twitter: '',
+            website: ''
+          },
           badges: [
             { label: 'Verified Physician', icon: 'Shield', color: 'success' },
             { label: '', icon: 'Stethoscope', color: 'accent' },
@@ -81,7 +86,12 @@ export default function PublicProfilePage() {
           languages: []
         };
         // Merge user data with defaults for missing fields
-        setUser({ ...defaultProfile, ...data, social: { ...defaultProfile.social, ...data.social } });
+        setUser({ 
+          ...defaultProfile, 
+          ...data, 
+          social: { ...defaultProfile.social, ...data.social },
+          social_links: { ...defaultProfile.social_links, ...data.social_links }
+        });
       } else {
         setUser(null);
       }
@@ -278,9 +288,9 @@ export default function PublicProfilePage() {
               <div className="text-muted-foreground text-center md:text-left mb-2">{user.specialty} &bull; {user.institution}</div>
               {/* Social/contact links */}
               <div className="flex gap-3 mb-3 justify-center md:justify-start">
-                {user.social?.linkedin && <a href={user.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline"><Icon name="Linkedin" size={20} /></a>}
-                {user.social?.twitter && <a href={user.social.twitter} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline"><Icon name="Twitter" size={20} /></a>}
-                {user.social?.website && <a href={user.social.website} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline"><Icon name="Globe" size={20} /></a>}
+                {(user.social?.linkedin || user.social_links?.linkedin) && <a href={user.social?.linkedin || user.social_links?.linkedin} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline"><Icon name="Linkedin" size={20} /></a>}
+                {(user.social?.twitter || user.social_links?.twitter) && <a href={user.social?.twitter || user.social_links?.twitter} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline"><Icon name="Twitter" size={20} /></a>}
+                {(user.social?.website || user.social_links?.website) && <a href={user.social?.website || user.social_links?.website} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline"><Icon name="Globe" size={20} /></a>}
                 {user.social?.email && <a href={`mailto:${user.social.email}`} className="text-accent hover:underline"><Icon name="Mail" size={20} /></a>}
               </div>
               {/* Languages */}
