@@ -1,6 +1,6 @@
 {
   "name": "agno-medical-intelligence",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Secure medical intelligence platform for case reporting and collaborative healthcare",
   "private": true,
   "dependencies": {
