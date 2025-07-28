@@ -15,11 +15,7 @@ import PublicProfilePage from "./pages/public-profile";
 
 // Simple authentication check (checks for user info in localStorage)
 const isAuthenticated = () => {
-  const userInfo = localStorage.getItem('userInfo');
-  console.log('🔐 Auth check - userInfo:', userInfo);
-  const isAuth = !!userInfo;
-  console.log('🔐 Auth check - isAuthenticated:', isAuth);
-  return isAuth;
+  return !!localStorage.getItem('userInfo');
 };
 
 const PrivateRoute = ({ children }) => {
