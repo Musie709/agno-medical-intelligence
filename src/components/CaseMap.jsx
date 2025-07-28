@@ -75,7 +75,18 @@ export default function CaseMap() {
             url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png"
           />
           {cases.filter(c => {
-            const hasValidCoords = (c.latlng && typeof c.latlng.lat === 'number' && typeof c.latlng.lng === 'number') || (Array.isArray(c.coordinates) && c.coordinates.length === 2);
+            // Parse latlng if it's a string
+            let parsedLatlng = c.latlng;
+            if (typeof c.latlng === 'string') {
+              try {
+                parsedLatlng = JSON.parse(c.latlng);
+              } catch (e) {
+                console.log('🗺️ Failed to parse latlng string:', c.latlng);
+                parsedLatlng = null;
+              }
+            }
+            
+            const hasValidCoords = (parsedLatlng && typeof parsedLatlng.lat === 'number' && typeof parsedLatlng.lng === 'number') || (Array.isArray(c.coordinates) && c.coordinates.length === 2);
             if (!hasValidCoords) {
               console.log('🗺️ Case filtered out - invalid coordinates:', c.title, c.latlng, c.coordinates);
             }
@@ -83,8 +94,19 @@ export default function CaseMap() {
           }).map((c) => {
             // Prefer latlng, fallback to coordinates
             let center = null;
-            if (c.latlng && typeof c.latlng.lat === 'number' && typeof c.latlng.lng === 'number') {
-              center = [c.latlng.lat, c.latlng.lng];
+            
+            // Parse latlng if it's a string
+            let parsedLatlng = c.latlng;
+            if (typeof c.latlng === 'string') {
+              try {
+                parsedLatlng = JSON.parse(c.latlng);
+              } catch (e) {
+                parsedLatlng = null;
+              }
+            }
+            
+            if (parsedLatlng && typeof parsedLatlng.lat === 'number' && typeof parsedLatlng.lng === 'number') {
+              center = [parsedLatlng.lat, parsedLatlng.lng];
             } else if (Array.isArray(c.coordinates) && c.coordinates.length === 2) {
               center = c.coordinates;
             }
