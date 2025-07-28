@@ -13,9 +13,9 @@ import NotFound from "pages/NotFound";
 import CaseAnalytics from "pages/case-analytics";
 import PublicProfilePage from "./pages/public-profile";
 
-// Simple JWT check (does not validate token, just presence)
+// Simple authentication check (checks for user info in localStorage)
 const isAuthenticated = () => {
-  return !!localStorage.getItem('authToken');
+  return !!localStorage.getItem('userInfo');
 };
 
 const PrivateRoute = ({ children }) => {

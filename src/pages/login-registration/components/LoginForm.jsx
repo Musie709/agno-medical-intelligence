@@ -65,8 +65,10 @@ const LoginForm = () => {
           setErrors({ submit: error.message || 'Login failed' });
         }
       } else {
+        console.log('✅ Login successful!', data);
         // Store user info in localStorage for easy access
         localStorage.setItem('userInfo', JSON.stringify(data.user));
+        console.log('🚀 Navigating to dashboard...');
         navigate('/dashboard-overview');
       }
     } catch (error) {
