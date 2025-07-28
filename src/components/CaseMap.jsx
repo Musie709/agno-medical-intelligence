@@ -8,11 +8,15 @@ export default function CaseMap() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log('🗺️ CaseMap component loaded');
+
   useEffect(() => {
     const fetchCases = async () => {
       setLoading(true);
+      console.log('🗺️ Starting to fetch cases...');
       try {
         const { data, error } = await supabaseService.getCases(50); // Get up to 50 cases
+        console.log('🗺️ Supabase response:', { data, error });
         if (error) {
           throw new Error(error.message);
         }
