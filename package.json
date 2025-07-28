@@ -1,6 +1,7 @@
 {
   "name": "agno-medical-intelligence",
-  "version": "0.1.0",
+  "version": "1.0.1",
+  "description": "Secure medical intelligence platform for case reporting and collaborative healthcare",
   "private": true,
   "dependencies": {
     "@dhiwise/component-tagger": "^1.0.10",
