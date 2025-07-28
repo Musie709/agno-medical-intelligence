@@ -4,6 +4,10 @@ import Button from '../../../components/ui/Button';
 
 const CaseHeader = ({ caseData, onEdit, onExport, onShare }) => {
   const getStatusColor = (status) => {
+    if (!status || typeof status !== 'string') {
+      return 'bg-muted text-muted-foreground border-border';
+    }
+    
     switch (status.toLowerCase()) {
       case 'draft':
         return 'bg-warning/10 text-warning border-warning/20';
@@ -49,7 +53,7 @@ const CaseHeader = ({ caseData, onEdit, onExport, onShare }) => {
         </div>
         
         <div className="flex items-center gap-2">
-          {caseData.status.toLowerCase() === 'draft' && (
+          {caseData.status && caseData.status.toLowerCase() === 'draft' && (
             <Button
               variant="outline"
               iconName="Edit"

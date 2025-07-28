@@ -46,6 +46,16 @@ const CaseViewerDetails = () => {
         }
 
         console.log('✅ Case data loaded:', data);
+        console.log('🔍 Case data structure:', {
+          id: data.id,
+          title: data.title,
+          description: data.description,
+          symptoms: data.symptoms,
+          profiles: data.profiles,
+          specialty: data.specialty,
+          priority: data.priority,
+          status: data.status
+        });
         setCaseData(data);
       } catch (err) {
         console.error('💥 Unexpected error:', err);
@@ -95,11 +105,11 @@ const CaseViewerDetails = () => {
   // Transform Supabase data to match component expectations
   const transformedCaseData = {
     caseId: caseData.id,
-    title: caseData.title,
+    title: caseData.title || 'Untitled Case',
     status: caseData.status || 'Under Review',
     submissionDate: new Date(caseData.created_at).toLocaleDateString(),
     lastUpdated: new Date(caseData.updated_at || caseData.created_at).toLocaleString(),
-    submittedBy: caseData.profiles ? `${caseData.profiles.first_name} ${caseData.profiles.last_name}` : 'Unknown',
+    submittedBy: caseData.profiles ? `${caseData.profiles.first_name || ''} ${caseData.profiles.last_name || ''}`.trim() || 'Unknown' : 'Unknown',
     priority: caseData.priority || 'Medium',
     category: caseData.specialty || 'General',
     confidentialityLevel: caseData.confidentiality_level || 'Standard'
@@ -122,7 +132,7 @@ const CaseViewerDetails = () => {
       time: new Date(caseData.created_at).toLocaleTimeString(),
       severity: caseData.severity || 'Mild',
       description: caseData.description || 'Initial case submission',
-      symptoms: caseData.symptoms || ['Not specified'],
+      symptoms: Array.isArray(caseData.symptoms) ? caseData.symptoms : ['Not specified'],
       vitals: {
         bloodPressure: '120/80',
         heartRate: '72 bpm',
