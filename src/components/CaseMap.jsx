@@ -16,6 +16,11 @@ export default function CaseMap() {
         if (error) {
           throw new Error(error.message);
         }
+        console.log('🗺️ Fetched cases:', data);
+        console.log('🗺️ Number of cases:', data?.length || 0);
+        if (data && data.length > 0) {
+          console.log('🗺️ First case latlng:', data[0].latlng);
+        }
         setCases(data || []);
       } catch (err) {
         console.error('Error fetching cases:', err);
@@ -65,7 +70,13 @@ export default function CaseMap() {
             attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
             url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png"
           />
-          {cases.filter(c => (c.latlng && typeof c.latlng.lat === 'number' && typeof c.latlng.lng === 'number') || (Array.isArray(c.coordinates) && c.coordinates.length === 2)).map((c) => {
+          {cases.filter(c => {
+            const hasValidCoords = (c.latlng && typeof c.latlng.lat === 'number' && typeof c.latlng.lng === 'number') || (Array.isArray(c.coordinates) && c.coordinates.length === 2);
+            if (!hasValidCoords) {
+              console.log('🗺️ Case filtered out - invalid coordinates:', c.title, c.latlng, c.coordinates);
+            }
+            return hasValidCoords;
+          }).map((c) => {
             // Prefer latlng, fallback to coordinates
             let center = null;
             if (c.latlng && typeof c.latlng.lat === 'number' && typeof c.latlng.lng === 'number') {
@@ -73,7 +84,11 @@ export default function CaseMap() {
             } else if (Array.isArray(c.coordinates) && c.coordinates.length === 2) {
               center = c.coordinates;
             }
-            if (!center) return null;
+            if (!center) {
+              console.log('🗺️ Case has no center coordinates:', c.title);
+              return null;
+            }
+            console.log('🗺️ Rendering marker for:', c.title, 'at', center);
             return (
               <CircleMarker
                 key={c.id}
