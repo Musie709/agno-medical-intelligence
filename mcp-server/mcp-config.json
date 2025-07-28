@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "agno-medical-intelligence": {
+      "command": "node",
+      "args": ["dist/index.js"],
+      "env": {
+        "VITE_SUPABASE_URL": "${VITE_SUPABASE_URL}",
+        "VITE_SUPABASE_ANON_KEY": "${VITE_SUPABASE_ANON_KEY}"
+      }
+    }
+  }
+} 
